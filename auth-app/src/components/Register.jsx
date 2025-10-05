@@ -41,7 +41,6 @@ const Register = () => {
 
     useEffect(() => {
         const result = USERNAME_REGEX.test(username)
-        console.log(result)
         setValidUsername(result);
     }, [username])
 
@@ -53,8 +52,7 @@ const Register = () => {
     useEffect(() => {
         const result = PASSWORD_REGEX.test(password);
         setValidPassword(result);
-        console.log("Password : " + password)
-        console.log("Valid : " + result)
+
         const match = password === confirmPassword;
         setValidConfirmPassword(match);
 

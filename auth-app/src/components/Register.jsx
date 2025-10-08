@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { AlertCircle, CheckCircle2, Camera, Eye, EyeOff, TurkishLira } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { usePost } from "../hooks/hooks";
 
 const USERNAME_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const Register = () => {
+
+    const {response, loading, error, postData} = usePost();
 
     const navigate = useNavigate();
 
@@ -71,6 +74,15 @@ const Register = () => {
             setErrorMsg("Invalid Entry !");
             return;
         }
+
+        postData({
+            route:"/user/register",
+            body:{
+                "username":username,
+                "email":email,
+                "password":password
+            }
+        })
         setSuccess(true)
         setUsername('')
         setEmail('')
@@ -80,8 +92,13 @@ const Register = () => {
         setValidEmail(false)
         setValidPassword(false)
         setValidConfirmPassword(false)
-        navigate("/", { state: { username: username } });
     }
+
+    useEffect(()=>{
+        if(response){
+            navigate("/", {state:{"username":username}});
+        }
+    }, [response])
 
 
     return (
@@ -231,7 +248,7 @@ const Register = () => {
                     <button type="submit" className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400 cursor-pointer"
                         disabled={!validUsername || !validEmail || !validPassword || !validConfirmPassword}
                     >
-                        Sign Up
+                        {loading?"Singing up...":"Sign Up"}
                     </button>
                 </form>
             </section>

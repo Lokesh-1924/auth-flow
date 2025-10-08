@@ -2,28 +2,27 @@ import axios from "axios";
 import { useState } from "react"
 const baseUrl = import.meta.env.VITE_APP_API_URL
 
-export const usePost= ( )=>{
-    
+export const usePost = () => {
+
     const [response, setResponse] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const postData = async ({route, body})=>{
+    const postData = async ({ route, body }) => {
         setLoading(true);
-        try{
-
+        try {
             const res = await axios.post(`${baseUrl}+${route}`, body);
             setResponse(res.data);
         }
-        catch(error){
+        catch (error) {
             setError(error)
         }
-        finally{
+        finally {
             setLoading(false);
         }
     }
 
 
-    return {response, loading, error, postData};
+    return { response, loading, error, postData };
 
 }

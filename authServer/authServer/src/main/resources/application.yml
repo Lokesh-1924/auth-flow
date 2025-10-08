@@ -18,3 +18,10 @@ spring:
 
 server:
   port: ${PORT}
+
+cors:
+  allowed-origins: ${ALLOWED_ORIGINS}
+  allowed-headers: ${ALLOWED_HEADERS}
+  allowed-methods: ${ALLOWED_METHODS}
+  exposed-headers: ${EXPOSED_HEADERS}
+  allow-credentials: ${ALLOW_CREDENTIALS}

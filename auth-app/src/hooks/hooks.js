@@ -11,7 +11,7 @@ export const usePost = () => {
     const postData = async ({ route, body }) => {
         setLoading(true);
         try {
-            const res = await axios.post(`${baseUrl}+${route}`, body);
+            const res = await axios.post(`${baseUrl}${route}`, body);
             setResponse(res.data);
         }
         catch (error) {

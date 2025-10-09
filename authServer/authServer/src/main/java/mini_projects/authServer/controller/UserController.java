@@ -18,7 +18,7 @@ public class UserController {
     private UserService userService;
     @PostMapping(path = "/register", consumes = "application/json")
     public ResponseEntity<?> addUser( @RequestBody User user){
-        System.out.println("Received user: " + user);
+        System.out.println("Received user: " + user.getUsername());
         try{
             userService.addUser(user);
             User savedUser = userService.addUser(user);

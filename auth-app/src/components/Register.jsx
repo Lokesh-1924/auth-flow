@@ -84,14 +84,6 @@ const Register = () => {
             }
         })
         setSuccess(true)
-        setUsername('')
-        setEmail('')
-        setPassword('')
-        setConfirmPassword('')
-        setValidUsername(false)
-        setValidEmail(false)
-        setValidPassword(false)
-        setValidConfirmPassword(false)
     }
 
     useEffect(()=>{

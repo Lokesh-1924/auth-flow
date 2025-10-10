@@ -11,6 +11,7 @@ import lombok.Setter;
 
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -35,6 +36,8 @@ public class User{
     @Email
     @Column(nullable = false, unique = true)
     private String email;
+
+    private List<String> role;
 
     @NotNull
     @Column(nullable = false)

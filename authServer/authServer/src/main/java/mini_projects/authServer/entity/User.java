@@ -8,9 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
-
-import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,8 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User{
-
+public class User extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,6 +40,5 @@ public class User{
     @NotNull
     @Column(nullable = false)
     private String password;
-
 
 }

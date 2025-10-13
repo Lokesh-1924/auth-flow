@@ -1,6 +1,5 @@
 package mini_projects.authServer.entity;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -8,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Where;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -35,7 +32,8 @@ public class User extends BaseEntity{
     @Column(nullable = false, unique = true)
     private String email;
 
-    private List<String> role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles;
 
     @NotNull
     @Column(nullable = false)

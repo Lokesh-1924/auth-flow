@@ -18,4 +18,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("SELECT u FROM User u WHERE u.status = 'ACTIVE'")
     List<User> findAllActiveUsers();
+
+    boolean existsByEmail(String email);
+
+    boolean existsByUsername(String username);
 }

@@ -1,9 +1,10 @@
 package mini_projects.authServer.controller;
 
-import mini_projects.authServer.entity.User;
+import jakarta.validation.Valid;
+import mini_projects.authServer.dto.ApiResponseDTO;
+import mini_projects.authServer.dto.UserRequestDTO;
+import mini_projects.authServer.dto.UserResponseDTO;
 import mini_projects.authServer.service.UserService;
-import org.apache.catalina.startup.UserConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,27 +19,19 @@ public class UserController {
     public UserController(UserService userService){
         this.userService = userService;
     }
-    @PostMapping(path = "/register", consumes = "application/json")
-    public ResponseEntity<?> addUser( @RequestBody User user){
-        System.out.println("Received user: " + user.getUsername());
-        try{
-            userService.addUser(user);
-            User savedUser = userService.addUser(user);
-            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-        }catch (Exception e){
-            System.out.println("Exception : "+e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping(path = "/register",consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ApiResponseDTO<?>> addUser(@Valid @RequestBody UserRequestDTO userRequestDTO){
+        UserResponseDTO savedUser = userService.addUser(userRequestDTO);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ApiResponseDTO.success(savedUser, "User Registered Successfully"));
     }
 
-    @GetMapping("/get-users")
-    public ResponseEntity<?> getUsers(){
-        try {
-            List<User> allUsers = userService.getAllActiveUsers();
-            return new ResponseEntity<>(allUsers, HttpStatus.OK);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping(path = "/all-users")
+    public ResponseEntity<ApiResponseDTO<?>> getUsers(){
+        List<UserResponseDTO> allUsers = userService.getUsers();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponseDTO.success(allUsers, "Users fetched successfully"));
     }
 }

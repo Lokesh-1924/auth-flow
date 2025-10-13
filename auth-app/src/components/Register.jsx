@@ -9,7 +9,7 @@ const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
 
 const Register = () => {
 
-    const {response, loading, error, postData} = usePost();
+    const { response, loading, error, postData } = usePost();
 
     const navigate = useNavigate();
 
@@ -67,6 +67,12 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setErrorMsg("");
+        setSuccess(false);
+        // If we retry, then we wont have the error from previous request
+        // Thats why we clear the error msg and success
+
         const v1 = USERNAME_REGEX.test(username);
         const v2 = EMAIL_REGEX.test(email);
         const v3 = PASSWORD_REGEX.test(password);
@@ -75,23 +81,28 @@ const Register = () => {
             return;
         }
 
-        postData({
-            route:"/user/register",
-            body:{
-                "username":username,
-                "email":email,
-                "password":password
+        await postData({
+            route: "/user/register",
+            body: {
+                "username": username,
+                "email": email,
+                "password": password
             }
-        })
-        setSuccess(true)
+        });
     }
 
-    useEffect(()=>{
-        if(response){
-            navigate("/", {state:{"username":username}});
+    useEffect(() => {
+        if (response?.success) {
+            navigate("/", { state: { username } });
         }
     }, [response])
 
+    useEffect(()=>{
+        if(error){
+            setErrorMsg(error);
+            errorRef.current.focus();
+        }
+    },[error])
 
     return (
         <div className="flex flex-col min-h-screen justify-center items-center bg-black">
@@ -130,7 +141,7 @@ const Register = () => {
                                 {validUsername ? (
                                     <CheckCircle2 size={18} className="text-green-500" />
                                 ) : (
-                                    <AlertCircle size={18} className="text-red-500" />
+                                    username && <AlertCircle size={18} className="text-red-500" />
                                 )}
                             </p>
                         </div>
@@ -240,7 +251,7 @@ const Register = () => {
                     <button type="submit" className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400 cursor-pointer"
                         disabled={!validUsername || !validEmail || !validPassword || !validConfirmPassword}
                     >
-                        {loading?"Singing up...":"Sign Up"}
+                        {loading ? "Singing up..." : "Sign Up"}
                     </button>
                 </form>
             </section>

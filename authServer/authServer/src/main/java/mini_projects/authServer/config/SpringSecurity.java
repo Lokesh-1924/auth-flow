@@ -29,7 +29,7 @@ public class SpringSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
 //                .csrf(csrf->csrf.disable()) both means same, disable does not take an argument, hence not used this syntax
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/user/**").permitAll()
+                        .requestMatchers("/user/register").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();

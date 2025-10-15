@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AlertCircle, CheckCircle2, Camera, Eye, EyeOff, TurkishLira } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { usePost } from "../hooks/hooks";
 
 const USERNAME_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
@@ -93,7 +93,8 @@ const Register = () => {
 
     useEffect(() => {
         if (response?.success) {
-            navigate("/", { state: { username } });
+            setSuccess(true)
+            navigate("/login");
         }
     }, [response])
 
@@ -254,6 +255,12 @@ const Register = () => {
                         {loading ? "Singing up..." : "Sign Up"}
                     </button>
                 </form>
+
+                <div className="mt-4">
+                    Have an account? 
+                    <NavLink to="/login"> Login
+                    </NavLink>
+                </div>
             </section>
         </div>
     )

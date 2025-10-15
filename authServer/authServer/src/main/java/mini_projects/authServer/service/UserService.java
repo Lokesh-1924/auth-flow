@@ -1,15 +1,19 @@
 package mini_projects.authServer.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import mini_projects.authServer.dto.UserRequestDTO;
 import mini_projects.authServer.dto.UserResponseDTO;
 import mini_projects.authServer.entity.User;
 import mini_projects.authServer.exception.DuplicateFieldException;
 import mini_projects.authServer.mapper.UserMapper;
 import mini_projects.authServer.repository.UserRepository;
+import org.hibernate.Session;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -40,7 +44,12 @@ public class UserService {
     }
 
     public List<UserResponseDTO> getUsers(){
-        List<User> allUsers = userRepository.findAllActiveUsers();
+        List<User> allUsers = userRepository.findAll();
         return allUsers.stream().map(UserMapper::toDTO).toList();
+    }
+
+    @Transactional
+    public void delete(UUID id){
+        userRepository.deleteById(id);
     }
 }

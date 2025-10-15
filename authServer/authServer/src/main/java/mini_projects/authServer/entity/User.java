@@ -7,6 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.SQLDelete;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +21,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users set status = 'DELETED' Where id=?")
+@FilterDef(name = "activeUserFilter", defaultCondition = "status = 'ACTIVE'")
+@Filter(name = "activeUserFilter")
 public class User extends BaseEntity{
 
     @Id

@@ -1,6 +1,7 @@
 package mini_projects.authServer.config;
 
 
+import mini_projects.authServer.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,18 +9,19 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
-
-import java.util.List;
-
 @Configuration
 @EnableWebSecurity
 public class SpringSecurity {
 
 
     private final CorsConfig config;
+    private final PasswordEncoderConfig passwordEncoderConfig;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
-    public SpringSecurity(CorsConfig config){
+    public SpringSecurity(CorsConfig config, PasswordEncoderConfig passwordEncoderConfig, UserDetailsServiceImpl userDetailsServiceImpl){
         this.config=config;
+        this.passwordEncoderConfig = passwordEncoderConfig;
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
     }
 
     @Bean
@@ -29,13 +31,11 @@ public class SpringSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
 //                .csrf(csrf->csrf.disable()) both means same, disable does not take an argument, hence not used this syntax
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/user/register").permitAll()
+                        .requestMatchers("/user/register", "/user/login").permitAll()
                         .anyRequest().authenticated()
                 )
+                .userDetailsService(userDetailsServiceImpl)
                 .build();
     }
-
-
-
 
 }
